@@ -3,6 +3,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
 
     var srcFiles = [
+        '<%= dirs.src %>assert.js',
+        '<%= dirs.src %>json.js',
+        '<%= dirs.src %>consts.js',
+        '<%= dirs.src %>Module.js',
+        '<%= dirs.src %>ModuleRepo.js',
+        '<%= dirs.src %>modopts.js',
+        '<%= dirs.src %>topsort.js',
+        '<%= dirs.src %>npm.js',
+        '<%= dirs.src %>grunt.js',
         '<%= dirs.src %>main.js'
     ];
 
