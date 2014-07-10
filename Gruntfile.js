@@ -3,16 +3,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
 
     var srcFiles = [
-        '<%= dirs.src %>assert.js',
-        '<%= dirs.src %>json.js',
-        '<%= dirs.src %>consts.js',
-        '<%= dirs.src %>Module.js',
-        '<%= dirs.src %>ModuleRepo.js',
-        '<%= dirs.src %>modopts.js',
-        '<%= dirs.src %>topsort.js',
-        '<%= dirs.src %>npm.js',
-        '<%= dirs.src %>grunt.js',
-        '<%= dirs.src %>main.js'
+        '<%= dirs.in %>assert.js',
+        '<%= dirs.in %>json.js',
+        '<%= dirs.in %>consts.js',
+        '<%= dirs.in %>Module.js',
+        '<%= dirs.in %>ModuleRepo.js',
+        '<%= dirs.in %>modopts.js',
+        '<%= dirs.in %>topsort.js',
+        '<%= dirs.in %>npm.js',
+        '<%= dirs.in %>grunt.js',
+        '<%= dirs.in %>main.js'
     ];
 
     banner = [
@@ -35,8 +35,8 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         dirs: {
-            bin: 'bin/',
-            src: 'src/',
+            'out': 'bin/',
+            'in': 'src/',
         },
 
         files : {
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 
             out: {
                 src: srcFiles,
-                dest: '<%= dirs.bin %><%= files.out %>'
+                dest: '<%= dirs.out %><%= files.out %>'
             }
         }
     });

@@ -18,8 +18,8 @@
     },
 
     "devDependencies": {
-        "grunt" : "~0.4.1",
-        "grunt-contrib-concat" : "~0.3"
+        "grunt" : "latest",
+        "grunt-contrib-concat" : "latest",
     },
 
     "private" : false
