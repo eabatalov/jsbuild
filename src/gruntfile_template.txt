@@ -1,0 +1,63 @@
+module.exports = function(grunt) {
+
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+
+    var srcFiles = <SRC_FILES_PLACEHOLDER>;
+
+    banner = [
+        '/**',
+        ' * <%= pkg.name %> - v<%= pkg.version %>',
+        ' *',
+        ' * <%= pkg.description %>',
+        ' *',
+        ' * Compiled: <%= grunt.template.today("yyyy-mm-dd") %>',
+        ' *',
+        ' */',
+        ''].join('\n');
+
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+
+        dirs: {
+            'out': 'bin/',
+            'in': 'src/',
+        },
+
+        files : {
+            out : {
+                debug : 'main.js',
+                release: 'main.min.js'
+            }
+        },
+
+        concat: {
+            options: {
+                stripBanners: true,
+                banner: banner,
+                separator: grunt.util.linefeed
+            },
+
+            out: {
+                src: srcFiles,
+                dest: '<%= dirs.out %><%= files.out.debug %>'
+            }
+        },
+
+        uglify: {
+            options : {
+                mangle: false,
+                compress: true,
+                sourceMap: false,
+                preserveComments: false, 
+            },
+            min: {
+                src: '<%= dirs.out %><%= files.out.debug %>',
+                dest: '<%= dirs.out %><%= files.out.release %>'
+            }
+        }
+
+    });
+
+    grunt.registerTask('default', ['concat', 'uglify']);
+};

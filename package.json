@@ -20,6 +20,7 @@
     "devDependencies": {
         "grunt" : "latest",
         "grunt-contrib-concat" : "latest",
+        "grunt-contrib-copy" : "latest"
     },
 
     "private" : false

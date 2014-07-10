@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     var srcFiles = [
         '<%= dirs.in %>assert.js',
@@ -13,6 +14,9 @@ module.exports = function(grunt) {
         '<%= dirs.in %>npm.js',
         '<%= dirs.in %>grunt.js',
         '<%= dirs.in %>main.js'
+    ];
+    var filesToCopy = [
+        { expand: true, flatten: true, src: '<%= dirs.in %>gruntfile_template.txt', dest: '<%= dirs.out %>' }
     ];
 
     banner = [
@@ -54,8 +58,17 @@ module.exports = function(grunt) {
                 src: srcFiles,
                 dest: '<%= dirs.out %><%= files.out %>'
             }
-        }
+        },
+
+        copy: {
+            options: {
+                mode: true
+            },
+            all: {
+                files: filesToCopy
+            }
+        },
     });
 
-    grunt.registerTask('default', ['concat']);
+    grunt.registerTask('default', ['concat', 'copy']);
 };
