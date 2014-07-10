@@ -1,3 +1,5 @@
+var assert = require('./assert');
+
 /*
  * @module: Module object
  * @options: {String}
@@ -76,3 +78,5 @@ Module.fromJSON = function(modJSON, modDirAbsPath) {
 
     return mod;
 };
+
+module.exports = Module;

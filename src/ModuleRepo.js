@@ -1,3 +1,8 @@
+var consts = require('./consts.js');
+var assert = require('./assert');
+var jsonParseSafe = require('./json.js');
+var Module = require('./Module.js');
+
 /*
  * Module name => Module
  */
@@ -27,10 +32,10 @@ ModuleRepo.prototype.addModule = function(modName, modDirAbsPath) {
     var fs = require('fs');
     var path = require('path');
 
-    var modDefFilePath = path.join(modDirAbsPath, path.sep, MODULE_DEFINITION_FILE_NAME);
+    var modDefFilePath = path.join(modDirAbsPath, path.sep, consts.MODULE_DEFINITION_FILE_NAME);
     var modJSON = jsonParseSafe(fs.readFileSync(modDefFilePath, "utf8"));
     if (modJSON.err) {
-        console.error('Malformed ', MODULE_DEFINITION_FILE_NAME, ' file of module',
+        console.error('Malformed ', consts.MODULE_DEFINITION_FILE_NAME, ' file of module',
             modName);
         throw modJSON.err;
     }
@@ -45,3 +50,5 @@ ModuleRepo.prototype.getModule = function(modName) {
     assert(mod, modName);
     return mod;
 };
+
+module.exports = ModuleRepo;

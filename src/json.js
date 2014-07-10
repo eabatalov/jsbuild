@@ -5,3 +5,5 @@ function jsonParseSafe(str) {
         return { err : err };
     }
 }
+
+module.exports = jsonParseSafe;

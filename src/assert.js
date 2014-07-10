@@ -5,3 +5,5 @@ function assert(cond, msg) {
         throw msg;
     }
 }
+
+module.exports = assert;

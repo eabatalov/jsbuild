@@ -1,3 +1,9 @@
+var ModuleRepo = require('./ModuleRepo.js');
+var fillModsOpts = require('./modopts.js');
+var topSortModules = require('./topsort.js');
+var saveNPMFile = require('./npm.js');
+var saveGruntfile = require('./grunt.js');
+
 var buildConfig = {
     moduleLookupFilePaths : [],
     moduleToBuildName : null

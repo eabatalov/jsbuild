@@ -18,3 +18,5 @@ function fillModsOpts(rootModName, modRepo, globalBuildOpts) {
 
     visit(rootModName);
 }
+
+module.exports = fillModsOpts;

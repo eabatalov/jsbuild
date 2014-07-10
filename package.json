@@ -1,6 +1,6 @@
 {
     "name" : "jsbuild",
-    "version" : "0.0.1",
+    "version" : "0.1.0",
     "description" : "Grunt based build tool for complex JavaScript projects with many modules and build options",
     "keywords" : ["javascript", "build"],
     "homepage" : "https://github.com/eabatalov/jsbuild",
@@ -10,17 +10,18 @@
         "email" : "eabatalov89@gmail.com"
     },
 
-    "main": "bin/main.js",
+    "main" : "src/main.js",
+
+    "repository" : {
+        "type" : "git",
+        "url" : "git+https://github.com/eabatalov/jsbuild.git"
+    },
 
     "dependencies" : {
-        "jquery-core-nodom" : "git+ssh://git@github.com:eabatalov/jquery-core-nodom.git",
         "commander" : "~2.2.0"
     },
 
     "devDependencies": {
-        "grunt" : "latest",
-        "grunt-contrib-concat" : "latest",
-        "grunt-contrib-copy" : "latest"
     },
 
     "private" : false

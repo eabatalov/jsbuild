@@ -38,3 +38,5 @@ function topSortModules(rootModName, modRepo) {
     validateTopOrder();
     return topSort;
 }
+
+module.exports = topSortModules;

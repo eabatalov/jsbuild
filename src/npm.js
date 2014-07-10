@@ -22,6 +22,8 @@ function saveNPMFile(modName, modRepo) {
     var packageFilePath = path.join(mod.dirAbsPath, path.sep, 'package.json');
     fs.writeFileSync(packageFilePath, packageObjJSON);
 
-    //console.log('Module ', mod.name, ' npm package file:');
+    //console.log('Generated ', mod.name, ' npm package file');
     //console.log(packageObjJSON);
 }
+
+module.exports = saveNPMFile;
