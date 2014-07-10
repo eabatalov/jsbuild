@@ -16,25 +16,25 @@ ModuleRepo.prototype.procModuleLookupFiles = function(moduleLookupFilePaths) {
 
         Object.keys(modLookup).forEach(function(modName) {
             var modRelPath = modLookup[modName];
-            modAbsPath = path.resolve(modLookupFileDir, modRelPath);
-            this.addModule(modName, modAbsPath);
+            modDirAbsPath = path.resolve(modLookupFileDir, modRelPath);
+            this.addModule(modName, modDirAbsPath);
         }, this);
 
     }, this);
 };
 
-ModuleRepo.prototype.addModule = function(modName, modAbsPath) {
+ModuleRepo.prototype.addModule = function(modName, modDirAbsPath) {
     var fs = require('fs');
     var path = require('path');
 
-    var modDefFilePath = path.join(modAbsPath, path.sep, MODULE_DEFINITION_FILE_NAME);
+    var modDefFilePath = path.join(modDirAbsPath, path.sep, MODULE_DEFINITION_FILE_NAME);
     var modJSON = jsonParseSafe(fs.readFileSync(modDefFilePath, "utf8"));
     if (modJSON.err) {
         console.error('Malformed ', MODULE_DEFINITION_FILE_NAME, ' file of module',
             modName);
         throw modJSON.err;
     }
-    var mod = Module.fromJSON(modJSON.data);
+    var mod = Module.fromJSON(modJSON.data.module, modDirAbsPath);
 
     assert(modName === mod.name);
     this.modules[modName] = mod;

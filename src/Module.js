@@ -1,6 +1,6 @@
 /*
  * @module: Module object
- * @options: [String]
+ * @options: {String}
  */
 function ModuleDependency(modName) {
     this.modName = modName;
@@ -13,14 +13,36 @@ ModuleDependency.prototype.addOpts = function(depModOpts) {
     }, this);
 };
 
-function Module(name, src) {
+function Module(name, allSrc, dirAbsPath, description) {
     assert(name);
-    assert(src)
+    assert(allSrc)
 
+    this.dirAbsPath = dirAbsPath;
     this.name = name;
-    this.src = src;
+    this.description = description || "";
+
+
+    this.allSrc = srcAbsPaths(this.dirAbsPath, allSrc);
+    this.buildSrc = [];
+
     this.dependencies = {};
     this.buildOptions = {};
+
+    this.addBuildOpts({ 'base' : true });
+
+    function srcAbsPaths(baseDir, relSrc) {
+        var path = require('path');
+
+        var absSrc = {};
+        Object.keys(relSrc).forEach(function(optName) {
+            var optRelSrc = relSrc[optName];
+            absSrc[optName] = optRelSrc.map(function(relSrcPath) {
+                return path.join(baseDir, relSrcPath);
+            });
+        });
+
+        return absSrc;
+    }
 }
 
 Module.prototype.addDep = function(depModName, depModOpts) {
@@ -30,16 +52,25 @@ Module.prototype.addDep = function(depModName, depModOpts) {
 };
 
 Module.prototype.addBuildOpts = function(optNames) {
-    for (var optName in optNames) {
+    Object.keys(optNames).forEach(function(optName) {
         this.buildOptions[optName] = true;
-    }
+        Array.prototype.push.apply(
+            this.buildSrc,
+            this.allSrc[optName]
+        );
+    }, this);
 };
 
-Module.fromJSON = function(modJSON) {
-    var mod = new Module(modJSON.module.name, modJSON.module.src);
+Module.fromJSON = function(modJSON, modDirAbsPath) {
+    var mod = new Module(
+        modJSON.name,
+        modJSON.src,
+        modDirAbsPath,
+        modJSON.description
+    );
 
-    Object.keys(modJSON.module.dependencies).forEach(function(depModName) {
-        var depModOpts = modJSON.module.dependencies[depModName];
+    Object.keys(modJSON.dependencies).forEach(function(depModName) {
+        var depModOpts = modJSON.dependencies[depModName];
         mod.addDep(depModName, depModOpts);
     });
 
