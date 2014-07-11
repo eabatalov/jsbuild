@@ -1,22 +1,31 @@
+/*
+ * Assign global options to all the modules and
+ * push options specified in deps to all the modules
+ * reachable by this options.
+ * Use BFS.
+ */
 function fillModsOpts(rootModName, modRepo, globalBuildOpts) {
     var modVisited = {};
+    var modQueue = [modRepo.getModule(rootModName)];
 
-    function visit(modName) {
-        if (modVisited[modName])
+    while(modQueue.length !== 0)
+        visit();
+
+    function visit() {
+        var mod = modQueue.shift();
+
+        if (modVisited[mod.name]) {
             return;
-        modVisited[modName] = true;
+        }
+        modVisited[mod.name] = true;
 
-        var mod = modRepo.getModule(modName);
         mod.addBuildOpts(globalBuildOpts);
-        Object.keys(mod.dependencies).forEach(function(depModName) {
-            var dep = mod.dependencies[depModName];
-            var depMod = modRepo.getModule(depModName);
+        mod.buildDeps.forEach(function(dep) {
+            var depMod = modRepo.getModule(dep.modName);
             depMod.addBuildOpts(dep.options);
-            visit(depMod.name);
+            modQueue.push(depMod);
         });
     }
-
-    visit(rootModName);
 }
 
 module.exports = fillModsOpts;

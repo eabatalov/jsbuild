@@ -10,12 +10,12 @@ function ModuleDependency(modName) {
 }
 
 ModuleDependency.prototype.addOpts = function(depModOpts) {
-    depModOpts.forEach(function(depModOp) {
-        this.options[depModOp] = true;
+    depModOpts.forEach(function(depModOpt) {
+        this.options[depModOpt] = true;
     }, this);
 };
 
-function Module(name, allSrc, dirAbsPath, description) {
+function Module(name, allSrc, allDeps, dirAbsPath, description) {
     assert(name);
     assert(allSrc)
 
@@ -25,9 +25,9 @@ function Module(name, allSrc, dirAbsPath, description) {
 
 
     this.allSrc = srcAbsPaths(this.dirAbsPath, allSrc);
+    this.allDeps = createAllDeps(allDeps);
     this.buildSrc = [];
-
-    this.dependencies = {};
+    this.buildDeps = [];
     this.buildOptions = {};
 
     this.addBuildOpts({ 'base' : true });
@@ -45,21 +45,43 @@ function Module(name, allSrc, dirAbsPath, description) {
 
         return absSrc;
     }
-}
 
-Module.prototype.addDep = function(depModName, depModOpts) {
-    if (!this.dependencies[depModName])
-        this.dependencies[depModName] = new ModuleDependency(depModName);
-    this.dependencies[depModName].addOpts(depModOpts);
-};
+    function createAllDeps(allDepsJSON) {
+        var allDeps = {};
+        Object.keys(allDepsJSON).forEach(function(optName) {
+            allDeps[optName] = {};
+
+            Object.keys(allDepsJSON[optName]).forEach(function(depModName) {
+                var dep = new ModuleDependency(depModName);
+                dep.addOpts(allDepsJSON[optName][depModName]);
+                allDeps[optName][depModName] = dep;
+            });
+
+        });
+        return allDeps;
+    }
+}
 
 Module.prototype.addBuildOpts = function(optNames) {
     Object.keys(optNames).forEach(function(optName) {
+        if (this.buildOptions[optName])
+            return;
         this.buildOptions[optName] = true;
-        Array.prototype.push.apply(
-            this.buildSrc,
-            this.allSrc[optName]
-        );
+
+        if (this.allSrc[optName]) {
+            Array.prototype.push.apply(
+                this.buildSrc,
+                this.allSrc[optName]
+            );
+        }
+
+        if (this.allDeps[optName]) {
+            Object.keys(this.allDeps[optName]).forEach(function(depModName) {
+                var dep = this.allDeps[optName][depModName];
+                this.buildDeps.push(dep);
+            }, this);
+        }
+
     }, this);
 };
 
@@ -67,14 +89,10 @@ Module.fromJSON = function(modJSON, modDirAbsPath) {
     var mod = new Module(
         modJSON.name,
         modJSON.src,
+        modJSON.dependencies,
         modDirAbsPath,
         modJSON.description
     );
-
-    Object.keys(modJSON.dependencies).forEach(function(depModName) {
-        var depModOpts = modJSON.dependencies[depModName];
-        mod.addDep(depModName, depModOpts);
-    });
 
     return mod;
 };

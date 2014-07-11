@@ -11,8 +11,8 @@ function topSortModules(rootModName, modRepo) {
         modVisited[modName] = true;
 
         var mod = modRepo.getModule(modName);
-        Object.keys(mod.dependencies).forEach(function(depModName) {
-            visit(depModName);
+        mod.buildDeps.forEach(function(dep) {
+            visit(dep.modName);
         });
         modSorted[modName] = true;
         topSort.push(mod);
@@ -22,7 +22,8 @@ function topSortModules(rootModName, modRepo) {
         //Very straightforward
         for(var i = 0; i < topSort.length; ++i) {
             var validatedMod = topSort[i];
-            Object.keys(validatedMod.dependencies).forEach(function(depModName) {
+            validatedMod.buildDeps.forEach(function(dep) {
+                var depModName = dep.modName;
                 for(var j = i + 1; j < topSort.length; ++j) {
                     if (depModName === topSort[j].name) {
                         throw new Error('Cyclic dependence between '
