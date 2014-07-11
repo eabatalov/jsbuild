@@ -15,7 +15,7 @@ There is no need to use dynamic linking (such as requirejs) in this workflow at 
 Dynamic linking in runtime has compatability issues with different runtimes. Especially runtimes that doesn't provide DOM (ex. CocoonJS and others). Even DOM capable runtimes has problems. See https://www.nothing.ch/en/research/using-optimised-requirejs-combination-phonegap.
 Having many advantages dynamic linking usage is rather complicated. Sometimes it is overkill.
 
-Implemented features:
+### Implemented features:
 - Declarative json syntax for definition of modules dependencies
 - Global compilation options for build, individual compilation options
   for each module dependency, conditional compilation of module sources and dependencies
@@ -23,11 +23,11 @@ Implemented features:
 - Generation of package.json + Gruntfile for compilation of all the modules into
   single js file with proper ordering of all the concatenated files
 
-Planned features:
+### Planned features:
 - Complete tool usage tutorial
 - Tool unit tests implementation
 
-Nice to have features:
+### Nice to have features:
 - jsbuild command which is always avaliable in user shell (like grunt-cli provides easy access to grunt)
 - package.json + Makefile generation for incremental builds
 - jsbuild grunt task implementation for its output customization by custom Gruntfile.js
@@ -35,4 +35,4 @@ Nice to have features:
 This project is still in development. It is used by our team in production.
 It helps us to build cross-platform javascript packages out of our ramose source tree very easily.
 
-Let's work together on the project if you are interested! ;)
+##### Let's work together on the project if you are interested! ;)
