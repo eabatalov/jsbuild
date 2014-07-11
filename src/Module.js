@@ -1,4 +1,5 @@
 var assert = require('./assert');
+var path = require('path');
 
 /*
  * @module: Module object
@@ -15,14 +16,15 @@ ModuleDependency.prototype.addOpts = function(depModOpts) {
     }, this);
 };
 
-function Module(name, allSrc, allDeps, dirAbsPath, description) {
+function Module(name, allSrc, allDeps, dirAbsPath, description, outDirPath, outFileName) {
     assert(name);
     assert(allSrc)
 
     this.dirAbsPath = dirAbsPath;
     this.name = name;
     this.description = description || "";
-
+    this.outDirPath = outDirPath ? path.resolve(dirAbsPath, outDirPath) : undefined;
+    this.outFileName = outFileName || undefined;
 
     this.allSrc = srcAbsPaths(this.dirAbsPath, allSrc);
     this.allDeps = createAllDeps(allDeps);
@@ -91,7 +93,9 @@ Module.fromJSON = function(modJSON, modDirAbsPath) {
         modJSON.src,
         modJSON.dependencies,
         modDirAbsPath,
-        modJSON.description
+        modJSON.description,
+        modJSON.outDir,
+        modJSON.outFile
     );
 
     return mod;

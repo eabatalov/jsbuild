@@ -16,18 +16,21 @@ module.exports = function(grunt) {
         ' */',
         ''].join('\n');
 
+    var outFileName = <OUT_FILE_NAME_PLACEHOLDER> || 'main';
+    var outDirPath = <OUT_DIR_PATH_PLACEHOLDER> || 'bin';
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
         dirs: {
-            'out': 'bin/',
+            'out': outDirPath + '/',
             'in': 'src/',
         },
 
         files : {
             out : {
-                debug : 'main.js',
-                release: 'main.min.js'
+                debug : outFileName + '.js',
+                release: outFileName + '.min.js'
             }
         },
 
