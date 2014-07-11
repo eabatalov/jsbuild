@@ -4,7 +4,8 @@ function saveGruntfile(modName, modRepo, modTopSort) {
     var mod = modRepo.getModule(modName);
 
     var gruntFilePath = path.join(mod.dirAbsPath, path.sep, 'Gruntfile.js');
-    var gruntFileContent = fs.readFileSync('src/gruntfile_template.txt', 'utf8');
+    var gruntFileTemplatePath = path.join(__dirname, 'gruntfile_template.txt');
+    var gruntFileContent = fs.readFileSync(gruntFileTemplatePath, 'utf8');
     var srcListJSON = JSON.stringify(genSrcList(), null, '    ');
     gruntFileContent =
         gruntFileContent.replace('<SRC_FILES_PLACEHOLDER>', '\n' + srcListJSON);
