@@ -1,10 +1,6 @@
 var assert = require('./assert');
 var path = require('path');
 
-/*
- * @module: Module object
- * @options: {String}
- */
 function ModuleDependency(modName) {
     this.modName = modName;
     this.options = {};
