@@ -25,6 +25,7 @@ Having many advantages dynamic linking usage is rather complicated. Sometimes it
 
 ### Planned features:
 - Complete tool usage tutorial
+- Verbose jsbuild.json and modules.json files errors reporting
 - Tool unit tests implementation
 
 ### Nice to have features:
