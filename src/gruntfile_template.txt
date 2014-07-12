@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
     banner = [
         '/**',
-        ' * <%= pkg.name %> - v<%= pkg.version %>',
+        ' * <%= pkg.name %> - <%= pkg.version %>',
         ' *',
         ' * <%= pkg.description %>',
         ' *',
