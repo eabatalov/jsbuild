@@ -24,6 +24,7 @@ Having many advantages dynamic linking usage is rather complicated. Sometimes it
   single js file with proper ordering of all the concatenated files
 
 ### Planned features:
+- Add definition of dependencies on npm packages to jsbuild.json file
 - Complete tool usage tutorial
 - Verbose jsbuild.json and modules.json files errors reporting
 - Tool unit tests implementation
