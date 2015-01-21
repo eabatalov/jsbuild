@@ -41,13 +41,15 @@ ModuleRepo.prototype.addModule = function(modName, modDirAbsPath) {
     }
     var mod = Module.fromJSON(modJSON.data.module, modDirAbsPath);
 
-    assert(modName === mod.name);
+    assert(modName === mod.name,
+        'Module name "' + mod.name + '" defined in jsbuild file is the same as '
+        + 'module name "' + modName + '" defined in modules file');
     this.modules[modName] = mod;
 };
 
 ModuleRepo.prototype.getModule = function(modName) {
     var mod = this.modules[modName];
-    assert(mod, modName);
+    assert(mod, "Module " + modName + " is defined in some modules files");
     return mod;
 };
 

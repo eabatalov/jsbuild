@@ -13,8 +13,8 @@ ModuleDependency.prototype.addOpts = function(depModOpts) {
 };
 
 function Module(name, allSrc, allDeps, dirAbsPath, description, outDirPath, outFileName) {
-    assert(name);
-    assert(allSrc)
+    assert(name, "module name is defined");
+    assert(allSrc, "module " + name + " sources are defined");
 
     this.dirAbsPath = dirAbsPath;
     this.name = name;
@@ -22,7 +22,7 @@ function Module(name, allSrc, allDeps, dirAbsPath, description, outDirPath, outF
     this.outDirPath = outDirPath ? path.resolve(dirAbsPath, outDirPath) : undefined;
     this.outFileName = outFileName || undefined;
 
-    this.allSrc = srcAbsPaths(this.dirAbsPath, allSrc);
+    this.allSrc = srcPathPrepare(this.dirAbsPath, allSrc);
     this.allDeps = createAllDeps(allDeps);
     this.buildSrc = [];
     this.buildDeps = [];
@@ -30,18 +30,32 @@ function Module(name, allSrc, allDeps, dirAbsPath, description, outDirPath, outF
 
     this.addBuildOpts({ 'base' : true });
 
-    function srcAbsPaths(baseDir, relSrc) {
+    function srcPathPrepare(baseDir, relSrc) {
         var path = require('path');
+        var glob = require('glob');
 
-        var absSrc = {};
+        var prepOptSrcPaths = {};
         Object.keys(relSrc).forEach(function(optName) {
             var optRelSrc = relSrc[optName];
-            absSrc[optName] = optRelSrc.map(function(relSrcPath) {
+
+
+            //Rel paths to abs paths
+            var optAbsSrcPaths = optRelSrc.map(function(relSrcPath) {
                 return path.join(baseDir, relSrcPath);
             });
+            //Expand glob patterns
+            optAbsSrcPathsUnGlobbed = [];
+            for (var i = 0; i < optAbsSrcPaths.length; ++i) {
+                var unGlobbedPathEntries = glob.sync(optAbsSrcPaths[i]);
+                for (var j = 0; j < unGlobbedPathEntries.length; ++j) {
+                    optAbsSrcPathsUnGlobbed.push(unGlobbedPathEntries[j]);
+                }
+            }
+            //Put to result
+            prepOptSrcPaths[optName] = optAbsSrcPathsUnGlobbed;
         });
 
-        return absSrc;
+        return prepOptSrcPaths;
     }
 
     function createAllDeps(allDepsJSON) {

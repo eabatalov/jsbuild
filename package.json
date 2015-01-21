@@ -18,6 +18,7 @@
     },
 
     "dependencies" : {
+        "glob" : "latest",
         "commander" : "~2.2.0"
     },
 
